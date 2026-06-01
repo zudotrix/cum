@@ -32,6 +32,8 @@ body{
     padding:35px;
     text-align:center;
     box-shadow:0 0 30px rgba(0,0,0,.15);
+    transition:1s;
+    z-index:10;
 }
 
 h1{
@@ -55,10 +57,16 @@ button{
     color:white;
     font-size:1rem;
     cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
 }
 
 .sorpresa{
     display:none;
+    animation:aparecer 1s ease;
 }
 
 .sorpresa img{
@@ -66,8 +74,34 @@ button{
     max-width:320px;
     border-radius:15px;
     margin-bottom:20px;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
 }
 
+.sorpresa h2{
+    color:#ff4081;
+    margin-bottom:15px;
+}
+
+@keyframes aparecer{
+    from{opacity:0; transform:translateY(20px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+/* CONFETI */
+.confeti{
+    position:fixed;
+    width:12px;
+    height:12px;
+    top:-20px;
+    pointer-events:none;
+    z-index:1;
+    animation:caer linear infinite;
+}
+
+@keyframes caer{
+    from{transform:translateY(-100px) rotate(0deg);}
+    to{transform:translateY(110vh) rotate(720deg);}
+}
 </style>
 </head>
 
@@ -97,28 +131,70 @@ button{
         <h2>Para Fafiux</h2>
 
         <p>
-           Felices 24 añacos <3
+           felizes 24 añacos, eres increible, eres super maja, linda, divertida,etc... te mereces lo mejor hoy y siempre, te quiere montxo <3
         </p>
 
     </div>
 
 </div>
 
-<audio id="musica" src="melan.m4a"></audio>
+<!-- AUDIO (SOLO UNA VEZ) -->
+<audio id="musica">
+    <source src="melan.m4a" type="audio/mp4">
+</audio>
 
 <script>
+
+let musicaReproducida = false;
+
+function crearConfeti(){
+
+    for(let i=0;i<150;i++){
+
+        let confeti = document.createElement("div");
+
+        confeti.classList.add("confeti");
+
+        confeti.style.left = Math.random() * 100 + "vw";
+
+        confeti.style.backgroundColor =
+        `hsl(${Math.random()*360},100%,50%)`;
+
+        confeti.style.animationDuration =
+        (Math.random()*3 + 3) + "s";
+
+        confeti.style.animationDelay =
+        Math.random()*2 + "s";
+
+        document.body.appendChild(confeti);
+    }
+}
+
+// intentar sonar al cargar (si el navegador lo permite)
+window.addEventListener("load", () => {
+    const audio = document.getElementById("musica");
+
+    if (!musicaReproducida) {
+        audio.play().then(() => {
+            musicaReproducida = true;
+        }).catch(() => {});
+    }
+});
 
 function abrirSorpresa(){
 
     document.getElementById("inicio").style.display = "none";
     document.getElementById("sorpresa").style.display = "block";
 
+    crearConfeti();
+
     const audio = document.getElementById("musica");
 
-    audio.currentTime = 0;
-    audio.play().catch(() => {
-        alert("Activa el sonido del móvil 🔊");
-    });
+    if (!musicaReproducida) {
+        audio.play().then(() => {
+            musicaReproducida = true;
+        }).catch(() => {});
+    }
 }
 
 </script>
