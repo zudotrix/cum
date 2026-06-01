@@ -87,7 +87,6 @@ button:hover{
     to{opacity:1; transform:translateY(0);}
 }
 
-/* CONFETI */
 .confeti{
     position:fixed;
     width:12px;
@@ -138,14 +137,12 @@ button:hover{
 
 </div>
 
-<!-- AUDIO (SOLO UNA VEZ) -->
+<!-- AUDIO -->
 <audio id="musica">
     <source src="melan.m4a" type="audio/mp4">
 </audio>
 
 <script>
-
-let musicaReproducida = false;
 
 function crearConfeti(){
 
@@ -170,17 +167,6 @@ function crearConfeti(){
     }
 }
 
-// intentar sonar al cargar (si el navegador lo permite)
-window.addEventListener("load", () => {
-    const audio = document.getElementById("musica");
-
-    if (!musicaReproducida) {
-        audio.play().then(() => {
-            musicaReproducida = true;
-        }).catch(() => {});
-    }
-});
-
 function abrirSorpresa(){
 
     document.getElementById("inicio").style.display = "none";
@@ -190,11 +176,10 @@ function abrirSorpresa(){
 
     const audio = document.getElementById("musica");
 
-    if (!musicaReproducida) {
-        audio.play().then(() => {
-            musicaReproducida = true;
-        }).catch(() => {});
-    }
+    // SOLO se reproduce aquí (esto es lo que funciona en móvil)
+    audio.play().catch(() => {
+        console.log("El móvil bloqueó el audio");
+    });
 }
 
 </script>
